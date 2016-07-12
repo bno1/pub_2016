@@ -23,4 +23,12 @@ void System::Start()
 {
 	m_impl->Start();
 }
+
+EntityID System::NewEntity() {
+	return m_impl->NewEntity();
+}
+
+bool System::EntityAddComponent(EntityID entityID, IComponent &component) {
+	return m_impl->EntityAddComponent(entityID, component);
+}
 }

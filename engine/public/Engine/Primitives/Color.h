@@ -1,6 +1,8 @@
 #pragma once
 
 #include <inttypes.h>
+namespace Engine
+{
 
 template<typename T>
 class Color {
@@ -14,3 +16,5 @@ public:
 
 	// TODO operators
 };
+
+}

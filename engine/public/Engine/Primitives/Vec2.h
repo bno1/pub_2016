@@ -1,5 +1,8 @@
 #pragma once
 
+namespace Engine
+{
+
 template<typename T>
 class Vec2 {
 public:
@@ -10,4 +13,12 @@ public:
 	Vec2(const Vec2 &v) : x(v.x), y(v.y) {}
 
 	// TODO operators
+
+	Vec2& operator+=(const Vec2<T> &v) {
+		x += v.x;
+		y += v.y;
+		return *this;
+	}
 };
+
+}

@@ -1,12 +1,6 @@
 #include "Engine/Core/IComponent.h"
 
-
-
-IComponent::IComponent()
+namespace Engine
 {
-}
 
-
-IComponent::~IComponent()
-{
 }

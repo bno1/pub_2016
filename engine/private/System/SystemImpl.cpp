@@ -1,10 +1,14 @@
 #include <Engine/System/System.h>
 #include <Engine/Rendering/OpenGLRenderer.h>
+#include <Engine/Core/RenderComponent.h>
+#include <Engine/Core/PhysicalComponent.h>
+#include <Engine\Core\EntityEvents\InputEvent.h>
 #include "System/SystemImpl.h"
 
 namespace Engine
 {
 
+EntityID SystemImpl::nextEntityID = 1;
 
 void SystemImpl::Init(SCreationSettings&& cs)
 {
@@ -35,33 +39,36 @@ void SystemImpl::Init(SCreationSettings&& cs)
 void SystemImpl::Start()
 {
 	bool done = false;
-	int posX = 64;
-	int posY = 64;
 	int speed = 3;
 	while (!done) {
 		m_renderer->BeginFrame();
-		m_renderer->RenderSprite(Sprite(nullptr, 0,0,64,64), posX, posY);
+
+		for (auto iter = m_entities.begin(); iter != m_entities.end(); ++iter) {
+			RenderComponent *rc = iter->second.GetComponent<RenderComponent>();
+			PhysicalComponent *pc = iter->second.GetComponent<PhysicalComponent>();
+
+			if (rc != nullptr && pc != nullptr) {
+				m_renderer->RenderSprite(Sprite(nullptr, 0, 0, pc->size.x, pc->size.y), pc->pos.x, pc->pos.y);
+			}
+		}
+
 		SDL_Event evt;
 		while (SDL_PollEvent(&evt)) {
+			InputEvent event;
+
 			switch (evt.type)
 			{
 			case SDL_KEYDOWN:
-			{
-				if (evt.key.keysym.sym == SDLK_UP)
-					posY -= speed;
-				if (evt.key.keysym.sym == SDLK_DOWN)
-					posY += speed;
-				if (evt.key.keysym.sym == SDLK_LEFT)
-					posX -= speed;
-				if (evt.key.keysym.sym == SDLK_RIGHT)
-					posX += speed;
-				break;
-			}
 			case SDL_KEYUP:
-			{
+				event.m_action = evt.type == SDL_KEYDOWN ? InputEvent::KEY_DOWN : InputEvent::KEY_UP;
+				event.m_keyCode = evt.key.keysym.sym;
+
+				// send input event to every entity
+				for (auto iter = m_entities.begin(); iter != m_entities.end(); ++iter)
+					iter->second.PostEvent(event);
 
 				break;
-			}
+
 			case SDL_WINDOWEVENT:
 				switch (evt.window.event) {
 				case SDL_WINDOWEVENT_RESIZED:
@@ -89,9 +96,25 @@ void SystemImpl::Start()
 		m_renderer->EndFrame();
 		SDL_GL_MakeCurrent(m_window, m_context);
 		SDL_GL_SwapWindow(m_window);
-
-
 	}
 };
+
+EntityID SystemImpl::NewEntity() {
+	EntityID id = nextEntityID++;
+
+	m_entities.emplace(id, Entity(id));
+
+	return id;
+}
+
+bool SystemImpl::EntityAddComponent(EntityID entityID, IComponent &component) {
+	auto iter = m_entities.find(entityID);
+
+	if (iter == m_entities.end())
+		return false;
+
+	iter->second.AddComponent(component);
+	return true;
+}
 
 }
