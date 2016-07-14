@@ -51,6 +51,9 @@ void SystemImpl::Start()
 				m_renderer->RenderSprite(Sprite(nullptr, 0, 0, pc->size.x, pc->size.y), pc->pos.x, pc->pos.y);
 			}
 		}
+		
+		/*Engine::Texture* tex = Engine::Texture::LoadTexture("../characters.tga");
+		m_renderer->RenderSprite(Sprite(tex, 275,41, 275+16, 41+20), posX, posY);*/
 
 		SDL_Event evt;
 		while (SDL_PollEvent(&evt)) {
