@@ -2,7 +2,7 @@
 #include <Engine/Rendering/OpenGLRenderer.h>
 #include <Engine/Core/RenderComponent.h>
 #include <Engine/Core/PhysicalComponent.h>
-#include <Engine\Core\EntityEvents\InputEvent.h>
+#include <Engine/Core/EntityEvents/InputEvent.h>
 #include "System/SystemImpl.h"
 
 namespace Engine
@@ -48,11 +48,11 @@ void SystemImpl::Start()
 			PhysicalComponent *pc = iter->second.GetComponent<PhysicalComponent>();
 
 			if (rc != nullptr && pc != nullptr) {
-				m_renderer->RenderSprite(Sprite(nullptr, 0, 0, pc->size.x, pc->size.y), pc->pos.x, pc->pos.y);
+				m_renderer->RenderSprite(rc->sprite, pc->pos.x, pc->pos.y);
 			}
 		}
 		
-		/*Engine::Texture* tex = Engine::Texture::LoadTexture("../characters.tga");
+		/*
 		m_renderer->RenderSprite(Sprite(tex, 275,41, 275+16, 41+20), posX, posY);*/
 
 		SDL_Event evt;
