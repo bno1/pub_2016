@@ -91,6 +91,7 @@ void Renderer::RenderSprite(Sprite& sprite, uint32_t posX, uint32_t posY)
 	GLint locPosition = glGetAttribLocation(program, "Position");
 	GLint locUV = glGetAttribLocation(program, "Texcoord");
 	GLint locTex = glGetUniformLocation(program, "tex");
+	GLint locAlpha = glGetUniformLocation(program, "alpha");
 
 	glUseProgram(program);
 	glViewport(0, 0, m_width, m_height);
@@ -105,6 +106,7 @@ void Renderer::RenderSprite(Sprite& sprite, uint32_t posX, uint32_t posY)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tempIBO);
 
 
+	glUniform1f(locAlpha, 1.0);
 	glUniform1i(locTex, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, sprite.m_tex->GetHandle());
