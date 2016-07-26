@@ -12,9 +12,11 @@ int main(int argc, char **argv)
 {
 	auto system = new System();
 	EntityID squareID;
-	std::unique_ptr<Texture> tex(Texture::LoadTexture("../characters.tga"));
+	std::unique_ptr<Texture> tex;
 
 	system->Init({ 1024, 768, "Test" });
+
+	tex.reset(Texture::LoadTexture("../characters.tga"));
 
 	squareID = system->NewEntity();
 	system->EntityAddComponent(squareID, *(new RenderComponent(Sprite(tex.get(), 275, 41, 275 + 16, 41 + 20))));

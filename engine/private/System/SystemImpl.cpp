@@ -51,9 +51,6 @@ void SystemImpl::Start()
 				m_renderer->RenderSprite(rc->sprite, pc->pos.x, pc->pos.y);
 			}
 		}
-		
-		/*
-		m_renderer->RenderSprite(Sprite(tex, 275,41, 275+16, 41+20), posX, posY);*/
 
 		SDL_Event evt;
 		while (SDL_PollEvent(&evt)) {
