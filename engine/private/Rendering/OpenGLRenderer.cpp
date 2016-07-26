@@ -44,7 +44,7 @@ void Renderer::Init()
 
 	glShaderSource(vshader, 1, &vertSource, NULL);
 	glCompileShader(vshader);
-	//if (glGetError() != GL_NO_ERROR)
+	if (glGetError() != GL_NO_ERROR)
 	{
 		int dummyVal;
 		glGetShaderInfoLog(vshader, ERROR_BUFFER_SIZE, &dummyVal, errorBuffer);
@@ -54,7 +54,7 @@ void Renderer::Init()
 
 	glShaderSource(fshader, 1, &fragSource, NULL);
 	glCompileShader(fshader);
-	//if (glGetError() != GL_NO_ERROR)
+	if (glGetError() != GL_NO_ERROR)
 	{
 		int dummyVal;
 		glGetShaderInfoLog(fshader, ERROR_BUFFER_SIZE, &dummyVal, errorBuffer);
@@ -64,7 +64,7 @@ void Renderer::Init()
 	glAttachShader(program, fshader);
 	glAttachShader(program, vshader);
 	glLinkProgram(program); 
-//	if (glGetError() != GL_NO_ERROR)
+	if (glGetError() != GL_NO_ERROR)
 	{
 		glGetProgramInfoLog(program, ERROR_BUFFER_SIZE, &dummyVal, errorBuffer);
 		int a = 0;
